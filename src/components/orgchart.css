@@ -1,0 +1,36 @@
+.orgchart-container {
+  position: relative;
+  width: 1280px;
+  height: 1024px;
+  overflow: hidden;
+  background: #f8f9fa;
+  cursor: grab;
+  user-select: none;
+}
+
+.orgchart-container:active {
+  cursor: grabbing;
+}
+
+.nodes-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.nodes-overlay > div {
+  pointer-events: auto;
+}
+
+.links-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
