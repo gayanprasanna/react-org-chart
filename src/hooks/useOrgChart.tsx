@@ -329,7 +329,6 @@ export function useOrgChart({
       const d = findNodeInHierarchy(hierarchyRoot, targetData);
 
       if (!d) {
-        console.warn("Node not found in hierarchy", clickedNode);
         return;
       }
 
@@ -473,11 +472,8 @@ export function useOrgChart({
       };
 
       // Find the node in the hierarchy starting from root
-      // Make sure we're using the current hierarchyRoot state
       const foundNode = searchInHierarchy(hierarchyRoot);
       if (!foundNode) {
-        // Debug: Log to see if hierarchyRoot is valid
-        // console.log('Node not found in hierarchy', { query, searchField, hierarchyRoot });
         return null;
       }
 

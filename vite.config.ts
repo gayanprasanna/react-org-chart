@@ -9,6 +9,7 @@ export default defineConfig({
     react(),
     dts({
       include: ["src"],
+      exclude: ["src/mockData/**"],
       outDir: "dist",
       insertTypesEntry: true,
       tsconfigPath: "./tsconfig.build.json",
@@ -17,16 +18,18 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.tsx"),
-      name: "MyReactLibrary",
-      fileName: "index",
+      name: "ReactOrgChart",
+      fileName: (format) => `index.${format === "es" ? "mjs" : "js"}`,
       formats: ["es", "cjs"],
     },
+    copyPublicDir: false,
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "d3"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          d3: "d3",
         },
       },
     },

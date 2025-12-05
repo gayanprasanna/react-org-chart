@@ -1,0 +1,44 @@
+# Development files
+playground/
+node_modules/
+src/
+*.config.js
+*.config.ts
+tsconfig*.json
+eslint.config.js
+index.html
+public/
+vite.svg
+
+# Build artifacts (keep dist/)
+*.tgz
+react-org-chart-*.tgz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.env
+.env.local
+.env.*.local
+
+# Mock data (not part of library)
+src/mockData/

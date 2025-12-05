@@ -1,22 +1,53 @@
 {
   "name": "react-org-chart",
-  "private": true,
-  "version": "0.0.0",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "version": "1.0.0",
+  "description": "A flexible and customizable React organization chart component with search, zoom, and pan capabilities",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/react-org-chart.css"
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "org-chart",
+    "organization-chart",
+    "tree",
+    "hierarchy",
+    "d3",
+    "organization",
+    "chart",
+    "visualization"
+  ],
+  "author": "Gayan Prasanna",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
   },
   "peerDependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "d3": "^7.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -33,9 +64,5 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vite-plugin-dts": "^4.5.4"
-  },
-  "dependencies": {
-    "d3": "^7.9.0",
-    "react-org-chart": "file:react-org-chart-0.0.0.tgz"
   }
 }
