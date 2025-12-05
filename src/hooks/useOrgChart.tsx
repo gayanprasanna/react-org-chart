@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import * as d3 from "d3";
+import { OrgChartTheme } from "../types";
 
 interface UseOrgChartProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -9,6 +10,7 @@ interface UseOrgChartProps {
   setNodes: (nodes: any[]) => void;
   setLinks: (links: any[]) => void;
   setTransform: (transform: { x: number; y: number; k: number }) => void;
+  theme: OrgChartTheme;
 }
 
 export function useOrgChart({
@@ -19,14 +21,15 @@ export function useOrgChart({
   setNodes,
   setLinks,
   setTransform,
+  theme,
 }: UseOrgChartProps) {
   useEffect(() => {
     if (!data || !svgRef.current || !containerRef.current) {
       return;
     }
     // For top-down layout: dx is vertical spacing, dy is horizontal spacing
-    const dx = 200; // Vertical spacing (top to bottom)
-    const dy = 200; // Horizontal spacing (left to right)
+    const dx = theme.layout.verticalSpacing; // Vertical spacing (top to bottom)
+    const dy = theme.layout.horizontalSpacing; // Horizontal spacing (left to right)
 
     const root = d3.hierarchy(data) as any;
     root.x0 = 0;
@@ -60,27 +63,27 @@ export function useOrgChart({
       // In D3 tree: x is depth (vertical), y is breadth (horizontal)
       // For top-down: we want y to be vertical (top), x to be horizontal (left)
       nodes.forEach((d: any) => {
-        const temp = Number(d.x) || 0;
+        const previousX = Number(d.x) || 0;
         d.x = Number(d.y) || 0; // x becomes horizontal position
-        d.y = temp; // y becomes vertical position (top-down)
+        d.y = previousX; // y becomes vertical position (top-down)
       });
 
       links.forEach((link: any) => {
-        const tempSourceX = Number(link.source.x) || 0;
-        const tempSourceY = Number(link.source.y) || 0;
-        link.source.x = tempSourceY;
-        link.source.y = tempSourceX;
+        const previousSourceX = Number(link.source.x) || 0;
+        const previousSourceY = Number(link.source.y) || 0;
+        link.source.x = previousSourceY;
+        link.source.y = previousSourceX;
 
-        const tempTargetX = Number(link.target.x) || 0;
-        const tempTargetY = Number(link.target.y) || 0;
-        link.target.x = tempTargetY;
-        link.target.y = tempTargetX;
+        const previousTargetX = Number(link.target.x) || 0;
+        const previousTargetY = Number(link.target.y) || 0;
+        link.target.x = previousTargetY;
+        link.target.y = previousTargetX;
       });
 
       // Calculate bounds to center the tree (after swap)
-      // Account for card dimensions (140px width, 140px height)
-      const cardWidth = 140;
-      const cardHeight = 140;
+      // Account for card dimensions from theme
+      const cardWidth = theme.nodeCard.width;
+      const cardHeight = theme.nodeCard.height;
 
       const nodeXValues = nodes.map((d: any) => Number(d.x) || 0);
       const nodeYValues = nodes.map((d: any) => Number(d.y) || 0);
@@ -168,5 +171,5 @@ export function useOrgChart({
 
     wrapperRef.current = { toggleNode };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, svgRef, containerRef, setNodes, setLinks, setTransform]);
+  }, [data, svgRef, containerRef, setNodes, setLinks, setTransform, theme]);
 }

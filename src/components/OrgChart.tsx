@@ -1,12 +1,35 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { useOrgChart } from "../hooks/useOrgChart";
 import NodeCard from "./NodeCard";
+import { OrgChartTheme, defaultTheme } from "../types";
 import "./orgchart.css";
+
 interface OrgChartWrapper {
   toggleNode: (node: any) => void;
 }
 
-const OrgChart = ({ data }: { data: any }) => {
+interface OrgChartProps {
+  data: any;
+  theme?: Partial<OrgChartTheme>;
+}
+
+const OrgChart = ({ data, theme }: OrgChartProps) => {
+  // Merge provided theme with defaults - memoize to prevent infinite loops
+  const mergedTheme: OrgChartTheme = useMemo(
+    () => ({
+      nodeCard: { ...defaultTheme.nodeCard, ...theme?.nodeCard },
+      avatar: { ...defaultTheme.avatar, ...theme?.avatar },
+      initials: { ...defaultTheme.initials, ...theme?.initials },
+      text: {
+        name: { ...defaultTheme.text.name, ...theme?.text?.name },
+        role: { ...defaultTheme.text.role, ...theme?.text?.role },
+      },
+      links: { ...defaultTheme.links, ...theme?.links },
+      container: { ...defaultTheme.container, ...theme?.container },
+      layout: { ...defaultTheme.layout, ...theme?.layout },
+    }),
+    [theme]
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const wrapperRef = useRef<OrgChartWrapper | null>(null);
@@ -23,10 +46,19 @@ const OrgChart = ({ data }: { data: any }) => {
     setNodes,
     setLinks,
     setTransform,
+    theme: mergedTheme,
   });
 
   return (
-    <div className="orgchart-container" ref={containerRef}>
+    <div
+      className="orgchart-container"
+      ref={containerRef}
+      style={{
+        backgroundColor: mergedTheme.container.backgroundColor,
+        width: mergedTheme.container.width,
+        height: mergedTheme.container.height,
+      }}
+    >
       <svg
         ref={svgRef}
         width="100%"
@@ -47,10 +79,8 @@ const OrgChart = ({ data }: { data: any }) => {
             // After swap: x is horizontal, y is vertical
             const nodeXs = nodes.map((n) => Number(n.x) || 0);
             const nodeYs = nodes.map((n) => Number(n.y) || 0);
-            const cardWidth = 140;
-            // Card height: 12px padding top + 60px avatar + 8px margin + 20px name + 4px margin + 16px role + 12px padding bottom = ~132px
-            // Using 140px to account for line heights and be safe
-            const cardHeight = 140;
+            const cardWidth = mergedTheme.nodeCard.width;
+            const cardHeight = mergedTheme.nodeCard.height;
 
             // Calculate bounds including card dimensions
             const minX = Math.min(...nodeXs) - 100;
@@ -74,10 +104,9 @@ const OrgChart = ({ data }: { data: any }) => {
                 }}
               >
                 {links.map((link, i) => {
-                  // Node card dimensions - cardWidth is 140px
-                  // Card center is exactly at 70px from left edge (half of 140px)
-                  const cardCenterX = cardWidth / 2; // 70px from left edge
-                  const verticalSpacing = 20; // Space between parent bottom and horizontal line
+                  // Node card dimensions from theme
+                  const cardCenterX = cardWidth / 2;
+                  const verticalSpacing = mergedTheme.links.verticalSpacing;
 
                   // Source (parent) node - connect from bottom center
                   // node.x is the left edge of the card (where the div starts)
@@ -106,9 +135,9 @@ const OrgChart = ({ data }: { data: any }) => {
                         L${targetX},${midY2}
                         L${targetX},${targetY}
                       `}
-                      stroke="#999"
+                      stroke={mergedTheme.links.strokeColor}
                       fill="none"
-                      strokeWidth="2"
+                      strokeWidth={mergedTheme.links.strokeWidth}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -131,6 +160,7 @@ const OrgChart = ({ data }: { data: any }) => {
             <NodeCard
               node={node}
               onToggle={() => wrapperRef.current?.toggleNode(node)}
+              theme={mergedTheme}
             />
           </div>
         ))}
