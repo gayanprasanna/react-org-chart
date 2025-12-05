@@ -4,7 +4,7 @@
 
 A flexible and customizable React organization chart component with interactive features including search, zoom, pan, and node expansion/collapse.
 
-[![npm version](https://img.shields.io/npm/v/react-org-chart.svg)](https://www.npmjs.com/package/react-org-chart)
+[![npm version](https://img.shields.io/npm/v/gp-react-org-chart.svg)](https://www.npmjs.com/package/gp-react-org-chart)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -25,11 +25,11 @@ A flexible and customizable React organization chart component with interactive 
 ## 📦 Installation
 
 ```bash
-npm install react-org-chart
+npm install gp-react-org-chart
 # or
-yarn add react-org-chart
+yarn add gp-react-org-chart
 # or
-pnpm add react-org-chart
+pnpm add gp-react-org-chart
 ```
 
 ### Peer Dependencies
