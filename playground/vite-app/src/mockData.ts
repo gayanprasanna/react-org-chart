@@ -4,7 +4,7 @@ const getAvatarUrl = (name: string): string => {
   return `https://ui-avatars.com/api/?name=${encodedName}&size=128&background=random&color=fff&bold=true`;
 };
 
-const data = {
+const orgData = {
   name: "Sarah Johnson",
   role: "Chief Executive Officer",
   photo: getAvatarUrl("Sarah Johnson"),
@@ -383,4 +383,4 @@ const data = {
   ],
 };
 
-export default data;
+export default orgData;

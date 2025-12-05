@@ -1,3 +1,14 @@
+export interface OrgChartNodeData {
+  [key: string]: any;
+  children?: OrgChartNodeData[];
+}
+
+export interface OrgChartFieldMapping {
+  title: string; // Field name for the main title (e.g., "name", "title", "label")
+  subtitle: string; // Field name for the subtitle (e.g., "role", "position", "department")
+  photo: string; // Field name for the photo/avatar (e.g., "photo", "avatar", "image")
+}
+
 export interface OrgChartTheme {
   // Node Card Styling
   nodeCard: {
@@ -49,6 +60,12 @@ export interface OrgChartTheme {
     verticalSpacing: number;
   };
 
+  // Node Highlight (for search)
+  highlight: {
+    borderColor: string;
+    borderWidth: number;
+  };
+
   // Container Styling
   container: {
     backgroundColor: string;
@@ -62,6 +79,12 @@ export interface OrgChartTheme {
     horizontalSpacing: number; // dy - spacing between siblings
   };
 }
+
+export const defaultFieldMapping: OrgChartFieldMapping = {
+  title: "name",
+  subtitle: "role",
+  photo: "photo",
+};
 
 export const defaultTheme: OrgChartTheme = {
   nodeCard: {
@@ -102,7 +125,11 @@ export const defaultTheme: OrgChartTheme = {
   links: {
     strokeColor: "#999",
     strokeWidth: 2,
-    verticalSpacing: 20,
+    verticalSpacing: 40,
+  },
+  highlight: {
+    borderColor: "#1976d2",
+    borderWidth: 3,
   },
   container: {
     backgroundColor: "#f8f9fa",
@@ -110,7 +137,7 @@ export const defaultTheme: OrgChartTheme = {
     height: 700,
   },
   layout: {
-    verticalSpacing: 200,
+    verticalSpacing: 250,
     horizontalSpacing: 200,
   },
 };
